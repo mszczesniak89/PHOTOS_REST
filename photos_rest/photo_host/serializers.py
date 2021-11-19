@@ -10,4 +10,4 @@ class AccountPlanSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = AccountPlan
-        fields = ['all']
+        fields = '__all__'
