@@ -72,6 +72,7 @@ THIRD_PARTY_APPS = [
     "rest_framework",
     "rest_framework.authtoken",
     "corsheaders",
+    "versatileimagefield",
 ]
 
 LOCAL_APPS = [
@@ -222,6 +223,8 @@ EMAIL_BACKEND = env(
 )
 # https://docs.djangoproject.com/en/dev/ref/settings/#email-timeout
 EMAIL_TIMEOUT = 5
+EMAIL_HOST = '0.0.0.0'
+EMAIL_PORT = 1025
 
 # ADMIN
 # ------------------------------------------------------------------------------

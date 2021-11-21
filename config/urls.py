@@ -6,6 +6,9 @@ from django.urls import include, path
 from django.views import defaults as default_views
 from django.views.generic import TemplateView
 from rest_framework.authtoken.views import obtain_auth_token
+from photos_rest.photo_host.views import AdminAccountPlanListView, AdminThumbnailTypeListView, AdminThumbnailTypeView, \
+    AdminAccountPlanView, \
+    AdminUserImageListView, AdminUserImageView, UserImageListView, UserImageView
 
 urlpatterns = [
     path("", TemplateView.as_view(template_name="pages/home.html"), name="home"),
@@ -29,6 +32,15 @@ urlpatterns += [
     path("api/", include("config.api_router")),
     # DRF auth token
     path("auth-token/", obtain_auth_token),
+    path('admin/account-plans/', AdminAccountPlanListView.as_view()),
+    path('admin/account-plan/<int:pk>/', AdminAccountPlanView.as_view(), name='admin-account-plan-detail'),
+    path('admin/thumbnail-types/', AdminThumbnailTypeListView.as_view()),
+    path('admin/thumbnail-type/<int:pk>/', AdminThumbnailTypeView.as_view(), name='admin-thumbnail-type-detail'),
+    path('admin/user-images/', AdminUserImageListView.as_view()),
+    path('admin/user-image/<int:pk>/', AdminUserImageView.as_view(), name='admin-user-image-detail'),
+    path('user-images/', UserImageListView.as_view()),
+    path('user-image/<int:pk>/', UserImageView.as_view(), name='user-image-detail'),
+
 ]
 
 if settings.DEBUG:

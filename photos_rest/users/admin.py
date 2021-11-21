@@ -20,6 +20,7 @@ class UserAdmin(auth_admin.UserAdmin):
             _("Permissions"),
             {
                 "fields": (
+                    "account_plan",
                     "is_active",
                     "is_staff",
                     "is_superuser",
