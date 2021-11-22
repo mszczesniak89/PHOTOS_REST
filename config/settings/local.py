@@ -11,7 +11,7 @@ SECRET_KEY = env(
     default="hOmoeF8WhFUaHB3q0lfkrhKXkD9KR2dqz9N7WbFg1qA0jSIypmOAW4Z6COj4eFZ6",
 )
 # https://docs.djangoproject.com/en/dev/ref/settings/#allowed-hosts
-ALLOWED_HOSTS = ["localhost", "0.0.0.0", "127.0.0.1"]
+ALLOWED_HOSTS = ["localhost", "0.0.0.0", "127.0.0.1", "www.mszczesniak-photos-rest.site"]
 
 # CACHES
 # ------------------------------------------------------------------------------
