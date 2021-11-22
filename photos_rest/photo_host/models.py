@@ -49,13 +49,5 @@ class UserImage(Model):
     def thumbnails(self):
         return self.user.account_plan.thumbnail_types.all()
 
-    # def _get_image_url(self):
-    #     if self.image:
-    #         return self.image.url
-    #     else:
-    #         return None
-    #
-    # image_url = property(_get_image_url)
-
 
 
