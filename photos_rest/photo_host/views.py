@@ -3,7 +3,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from rest_framework import generics
 from photos_rest.photo_host.models import AccountPlan, ThumbnailType, UserImage
 from photos_rest.photo_host.serializers import AdminAccountPlanSerializer, AdminThumbnailTypeSerializer, \
-    AdminUserImageSerializer, UserImageSerializer
+    AdminUserImageSerializer, UserImageSerializer, UserImageAddSerializer
 
 
 # Create your views here.
@@ -45,41 +45,59 @@ class AdminUserImageListView(UserPassesTestMixin, generics.ListCreateAPIView):
     queryset = UserImage.objects.all()
     serializer_class = AdminUserImageSerializer
 
+    def test_func(self):
+        return self.request.user.is_staff
+
 
 class AdminUserImageView(UserPassesTestMixin, generics.RetrieveUpdateDestroyAPIView):
     queryset = UserImage.objects.all()
     serializer_class = AdminUserImageSerializer
 
+    def test_func(self):
+        return self.request.user.is_staff
 
-class UserImageListView(LoginRequiredMixin, generics.ListCreateAPIView):
+
+class UserImageListView(LoginRequiredMixin, generics.ListAPIView):
     serializer_class = UserImageSerializer
 
     def get_queryset(self):
         return UserImage.objects.filter(user=self.request.user)
+
+
+class UserImageView(LoginRequiredMixin, UserPassesTestMixin, generics.RetrieveAPIView):
+    serializer_class = UserImageSerializer
+
+    def get_queryset(self):
+        return UserImage.objects.filter(user=self.request.user)
+
+    def test_func(self):
+        return self.request.user == self.get_object().user
+
+
+class UserImageAddView(LoginRequiredMixin, generics.CreateAPIView):
+    serializer_class = UserImageAddSerializer
 
     def perform_create(self, serializer):
         serializer.validated_data['user'] = self.request.user
-        return super(UserImageListView, self).perform_create(serializer)
+        return super(UserImageAddView, self).perform_create(serializer)
 
 
-class UserImageView(LoginRequiredMixin, generics.RetrieveUpdateDestroyAPIView):
-    serializer_class = UserImageSerializer
+class UserImageUpdateView(LoginRequiredMixin, UserPassesTestMixin, generics.UpdateAPIView):
+    serializer_class = UserImageAddSerializer
 
     def get_queryset(self):
         return UserImage.objects.filter(user=self.request.user)
 
-    def get_serializer_context(self):
-        context = super(UserImageView, self).get_serializer_context()
-        thumbnail_types = ThumbnailType.objects.filter(accountplan__user=self.request.user)
-        context['thumbnail_types'] = 'guwno'
-        # context['thumbnail_types'] = [item.name for item in thumbnail_types]
-        return context
-        # return {
-        #     'request': self.request,
-        #     'thumbnail_types': 'test1', 'test2',
-        # }
+    def test_func(self):
+        return self.request.user == self.get_object().user
 
-    def get_serializer(self, *args, **kwargs):
-        serializer_class = self.get_serializer_class()
-        kwargs['context'] = self.get_serializer_context()
-        return serializer_class(*args, **kwargs)
+
+class UserImageDeleteView(LoginRequiredMixin, UserPassesTestMixin, generics.DestroyAPIView):
+    serializer_class = UserImageAddSerializer
+
+    def get_queryset(self):
+        return UserImage.objects.filter(user=self.request.user)
+
+    def test_func(self):
+        return self.request.user == self.get_object().user
+

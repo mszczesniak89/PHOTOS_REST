@@ -22,7 +22,14 @@ class AdminUserImageSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = UserImage
-        exclude = ['user']
+        fields = '__all__'
+
+
+class UserImageAddSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = UserImage
+        exclude = ['user', 'image_ppoi']
 
 
 class UserImageSerializer(serializers.ModelSerializer):
@@ -32,7 +39,6 @@ class UserImageSerializer(serializers.ModelSerializer):
     class Meta:
         model = UserImage
         exclude = ['user', 'image', 'image_ppoi']
-    #
 
     def get_thumbnails(self, obj):
         thumbnail_types = obj.user.account_plan.thumbnail_types.all()
