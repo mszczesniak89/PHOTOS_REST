@@ -101,24 +101,3 @@ class UserImageDeleteView(LoginRequiredMixin, UserPassesTestMixin, generics.Dest
     def test_func(self):
         return self.request.user == self.get_object().user
 
-
-class GetDownloadURL(APIView):
-
-    def get(self, request):
-        # Get the service client.
-        session = boto3.session.Session(profile_name="AWSUserName")
-        s3 = session.client("s3")
-
-        # Generate the URL to get 'key-name' from 'bucket-name'
-        url = s3.generate_presigned_url(
-            ClientMethod="get_object",
-            Params={
-                "Bucket": "your-s3-bucket",
-                "Key": "SampleDLZip.zip",
-                "ResponseContentType": "application/zip",
-            },
-            ExpiresIn=100,
-        )
-
-        return Response(url)
-
