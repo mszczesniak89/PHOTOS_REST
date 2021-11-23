@@ -39,7 +39,7 @@ urlpatterns += [
     path('admin/thumbnail-type/<int:pk>/', AdminThumbnailTypeView.as_view(), name='admin-thumbnail-type-detail'),
     path('admin/user-images/', AdminUserImageListView.as_view()),
     path('admin/user-image/<int:pk>/', AdminUserImageView.as_view(), name='admin-user-image-detail'),
-    path('user-images/', UserImageListView.as_view()),
+    path('user-images/', UserImageListView.as_view(), name='user-images'),
     path('user-image/<int:pk>/', UserImageView.as_view(), name='user-image-detail'),
     path('user-image/add/', UserImageAddView.as_view()),
     path('user-image/update/<int:pk>/', UserImageUpdateView.as_view()),
