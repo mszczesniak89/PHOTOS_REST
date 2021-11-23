@@ -32,8 +32,15 @@ class UserImageAddSerializer(serializers.ModelSerializer):
         exclude = ['user', 'image_ppoi']
 
 
-class UserImageSerializer(serializers.ModelSerializer):
+class UserImageListSerializer(serializers.ModelSerializer):
     detail = serializers.HyperlinkedIdentityField(view_name='user-image-detail', format='html')
+
+    class Meta:
+        model = UserImage
+        exclude = ['user', 'image', 'image_ppoi']
+
+
+class UserImageSerializer(serializers.ModelSerializer):
     original_image = serializers.SerializerMethodField()
     thumbnails = serializers.SerializerMethodField()
 

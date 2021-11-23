@@ -3,7 +3,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from rest_framework import generics
 from photos_rest.photo_host.models import AccountPlan, ThumbnailType, UserImage
 from photos_rest.photo_host.serializers import AdminAccountPlanSerializer, AdminThumbnailTypeSerializer, \
-    AdminUserImageSerializer, UserImageSerializer, UserImageAddSerializer
+    AdminUserImageSerializer, UserImageSerializer, UserImageAddSerializer, UserImageListSerializer
 
 
 # Create your views here.
@@ -58,7 +58,7 @@ class AdminUserImageView(UserPassesTestMixin, generics.RetrieveUpdateDestroyAPIV
 
 
 class UserImageListView(LoginRequiredMixin, generics.ListAPIView):
-    serializer_class = UserImageSerializer
+    serializer_class = UserImageListSerializer
 
     def get_queryset(self):
         return UserImage.objects.filter(user=self.request.user)
