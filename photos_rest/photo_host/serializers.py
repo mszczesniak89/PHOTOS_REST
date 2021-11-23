@@ -33,6 +33,7 @@ class UserImageAddSerializer(serializers.ModelSerializer):
 
 
 class UserImageSerializer(serializers.ModelSerializer):
+    detail = serializers.HyperlinkedIdentityField(view_name='user-image-detail', format='html')
     original_image = serializers.SerializerMethodField()
     thumbnails = serializers.SerializerMethodField()
 
