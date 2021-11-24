@@ -1,4 +1,5 @@
 from rest_framework import serializers
+from rest_framework.reverse import reverse
 from config.settings.base import env
 import boto3
 from photos_rest.photo_host.models import AccountPlan, UserImage, ThumbnailType
@@ -42,10 +43,22 @@ class UserImageListSerializer(serializers.ModelSerializer):
         exclude = ['user', 'image', 'image_ppoi']
 
 
+class UserImageTempLink(serializers.HyperlinkedRelatedField):
+    view_name = 'user-image-temp-link'
+    queryset = UserImage.objects.all()
+
+    def get_url(self, obj, view_name, request, format):
+        url_kwargs = {
+            'exp_time': 1200,
+            'pk': obj.pk
+        }
+        return reverse(view_name, kwargs=url_kwargs, request=request, format=format)
+
+
 class UserImageSerializer(serializers.ModelSerializer):
     original_image = serializers.SerializerMethodField()
     thumbnails = serializers.SerializerMethodField()
-    temp_link = serializers.HyperlinkedIdentityField(view_name='user-image-temp-link', format='html')
+    temp_link = UserImageTempLink(format='html')
 
     class Meta:
         model = UserImage
