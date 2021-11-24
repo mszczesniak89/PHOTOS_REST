@@ -108,10 +108,7 @@ class UserImageDeleteView(LoginRequiredMixin, UserPassesTestMixin, generics.Dest
 
 class UserImageExpiringLinkVew(APIView):
 
-    def get_serializer_context(self, exp_time):
-        return {'exp_time': exp_time}
-
-    def get(self, request, *args, **kwargs):
-        image = UserImage.objects.get(user=self.request.user, id=kwargs['pk'])
-        serializer = UserImageExpiringLinkSerializer(image)
+    def get(self, request, pk, exp_time):
+        image = UserImage.objects.get(user=self.request.user, id=pk)
+        serializer = UserImageExpiringLinkSerializer(image, context={'exp_time': exp_time})
         return Response(serializer.data)
