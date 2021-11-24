@@ -1,7 +1,5 @@
 from django.shortcuts import render
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
-from config.settings.base import env
-import boto3
 from rest_framework import generics
 from rest_framework.views import APIView
 from rest_framework.response import Response
@@ -108,24 +106,9 @@ class UserImageDeleteView(LoginRequiredMixin, UserPassesTestMixin, generics.Dest
         return self.request.user == self.get_object().user
 
 
-# class UserImageExpiringLinkVew(LoginRequiredMixin, UserPassesTestMixin, generics.GenericAPIView):
-#     allowed_methods = ['GET']
-#     serializer_class = UserImageExpiringLinkSerializer
-#
-#     def get_queryset(self):
-#         return UserImage.objects.filter(user=self.request.user)
-#
-#     def test_func(self):
-#         return self.request.user == self.get_object().user
-
-
 class UserImageExpiringLinkVew(APIView):
 
     def get(self, request, pk):
         image = UserImage.objects.get(user=self.request.user, id=pk)
-        image.temp_url = boto3.client('s3').generate_presigned_url(
-            ClientMethod='get_object',
-            Params={'Bucket': env("DJANGO_AWS_STORAGE_BUCKET_NAME"), 'Key': image.image.url},
-            ExpiresIn=3600)
         serializer = UserImageExpiringLinkSerializer(image)
         return Response(serializer.data)

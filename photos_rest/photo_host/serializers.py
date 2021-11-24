@@ -1,4 +1,6 @@
 from rest_framework import serializers
+from config.settings.base import env
+import boto3
 from photos_rest.photo_host.models import AccountPlan, UserImage, ThumbnailType
 from versatileimagefield.serializers import VersatileImageFieldSerializer
 from rest_framework.serializers import ImageField
@@ -62,9 +64,17 @@ class UserImageSerializer(serializers.ModelSerializer):
 
 
 class UserImageExpiringLinkSerializer(serializers.ModelSerializer):
+    temp_url = serializers.SerializerMethodField()
 
     class Meta:
         model = UserImage
         fields = ['temp_url']
+
+    def get_temp_url(self, obj):
+        temp_url = boto3.client('s3').generate_presigned_url(
+            ClientMethod='get_object',
+            Params={'Bucket': env("DJANGO_AWS_STORAGE_BUCKET_NAME"), 'Key': obj.image.url},
+            ExpiresIn=3600)
+        return temp_url
 
 
