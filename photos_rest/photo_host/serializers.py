@@ -65,6 +65,6 @@ class UserImageExpiringLinkSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = UserImage
-        fields = 'temp_url'
+        fields = ['temp_url']
 
 
