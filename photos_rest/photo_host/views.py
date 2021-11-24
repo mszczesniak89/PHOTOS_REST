@@ -112,6 +112,6 @@ class UserImageExpiringLinkVew(APIView):
         return {'exp_time': exp_time}
 
     def get(self, request, *args, **kwargs):
-        image = UserImage.objects.get(user=self.request.user, id=pk)
+        image = UserImage.objects.get(user=self.request.user, id=kwargs['pk'])
         serializer = UserImageExpiringLinkSerializer(image)
         return Response(serializer.data)
