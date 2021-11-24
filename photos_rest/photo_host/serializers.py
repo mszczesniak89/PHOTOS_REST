@@ -74,11 +74,6 @@ class UserImageSerializer(serializers.ModelSerializer):
         if obj.user.account_plan.original_file_access:
             return self.context['request'].build_absolute_uri(obj.image.url)
 
-    def validate_original_image(self, obj, value):
-        if not obj.user.account_plan.original_file_access:
-            raise serializers.ValidationError('You do not have access to the original image')
-        return value
-
 
 class UserImageExpiringLinkSerializer(serializers.ModelSerializer):
     temp_url = serializers.SerializerMethodField()
