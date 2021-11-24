@@ -62,7 +62,13 @@ class UserImageSerializer(serializers.ModelSerializer):
 
 
 class UserImageExpiringLinkSerializer(serializers.ModelSerializer):
+    original_image = serializers.SerializerMethodField()
 
     class Meta:
         model = UserImage
         fields = '__all__'
+
+    def get_original_image(self, obj):
+        if obj.user.account_plan.original_file_access:
+            return self.context['request'].build_absolute_uri(obj.image.url)
+
