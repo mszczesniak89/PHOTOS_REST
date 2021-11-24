@@ -1,5 +1,6 @@
 from django.shortcuts import render
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
+import boto3
 from rest_framework import generics
 from rest_framework.views import APIView
 from rest_framework.response import Response
@@ -121,5 +122,9 @@ class UserImageExpiringLinkVew(APIView):
 
     def get(self, request, pk):
         image = UserImage.objects.get(user=self.request.user, id=pk)
+        image.temp_url = boto3.client('s3').generate_presigned_url(
+            ClientMethod='get_object',
+            Params={'Bucket': 'BUCKET_NAME', 'Key': 'OBJECT_KEY'},
+            ExpiresIn=3600)
         serializer = UserImageExpiringLinkSerializer(image)
         return Response(serializer.data)
