@@ -44,7 +44,7 @@ urlpatterns += [
     path('user-image/add/', UserImageAddView.as_view(), name='user-image-add'),
     path('user-image/<int:pk>/update/', UserImageUpdateView.as_view(), name='user-image-update'),
     path('user-image/<int:pk>/delete/', UserImageDeleteView.as_view(), name='user-image-delete'),
-    path('user-image/<int:pk>/temp-link/', UserImageExpiringLinkVew.as_view(), name='user-image-temp-link'),
+    path('user-image/<int:pk>/temp-link/<int:exp_time>/', UserImageExpiringLinkVew.as_view(), name='user-image-temp-link'),
 
 ]
 

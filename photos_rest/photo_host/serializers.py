@@ -74,7 +74,7 @@ class UserImageExpiringLinkSerializer(serializers.ModelSerializer):
         temp_url = boto3.client('s3').generate_presigned_url(
             ClientMethod='get_object',
             Params={'Bucket': env("DJANGO_AWS_STORAGE_BUCKET_NAME"), 'Key': obj.image.file.obj.key},
-            ExpiresIn=3600)
+            ExpiresIn=self.context['exp_time'])
         return temp_url
 
 
