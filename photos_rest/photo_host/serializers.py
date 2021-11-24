@@ -43,7 +43,7 @@ class UserImageListSerializer(serializers.ModelSerializer):
         exclude = ['user', 'image', 'image_ppoi']
 
 
-class UserImageTempLink(serializers.HyperlinkedRelatedField):
+class UserImageTempLink(serializers.HyperlinkedIdentityField):
     view_name = 'user-image-temp-link'
     queryset = UserImage.objects.all()
 
