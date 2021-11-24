@@ -106,7 +106,7 @@ class UserImageDeleteView(LoginRequiredMixin, UserPassesTestMixin, generics.Dest
         return self.request.user == self.get_object().user
 
 
-class UserImageExpiringLinkVew(APIView):
+class UserImageExpiringLinkVew(LoginRequiredMixin, APIView):
 
     def get(self, request, pk, exp_time):
         image = UserImage.objects.get(user=self.request.user, id=pk)

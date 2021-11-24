@@ -46,11 +46,12 @@ class UserImageListSerializer(serializers.ModelSerializer):
 class UserImageTempLink(serializers.HyperlinkedIdentityField):
 
     def get_url(self, obj, view_name, request, format):
-        url_kwargs = {
-            'exp_time': 1200,
-            'pk': obj.pk
-        }
-        return reverse(view_name, kwargs=url_kwargs, request=request, format=format)
+        if obj.user.account_plan.expiring_links_access:
+            url_kwargs = {
+                'exp_time': 1200,
+                'pk': obj.pk
+            }
+            return reverse(view_name, kwargs=url_kwargs, request=request, format=format)
 
 
 class UserImageSerializer(serializers.ModelSerializer):
@@ -82,10 +83,11 @@ class UserImageExpiringLinkSerializer(serializers.ModelSerializer):
         fields = ['temp_url']
 
     def get_temp_url(self, obj):
-        temp_url = boto3.client('s3').generate_presigned_url(
-            ClientMethod='get_object',
-            Params={'Bucket': env("DJANGO_AWS_STORAGE_BUCKET_NAME"), 'Key': obj.image.file.obj.key},
-            ExpiresIn=self.context.get('exp_time'))
-        return temp_url
+        if obj.user.account_plan.expiring_links_access:
+            temp_url = boto3.client('s3').generate_presigned_url(
+                ClientMethod='get_object',
+                Params={'Bucket': env("DJANGO_AWS_STORAGE_BUCKET_NAME"), 'Key': obj.image.file.obj.key},
+                ExpiresIn=self.context.get('exp_time'))
+            return temp_url
 
 
