@@ -44,21 +44,19 @@ class UserImageListSerializer(serializers.ModelSerializer):
 
 
 class UserImageTempLink(serializers.HyperlinkedIdentityField):
-    view_name = 'user-image-temp-link'
-    queryset = UserImage.objects.all()
 
     def get_url(self, obj, view_name, request, format):
         url_kwargs = {
             'exp_time': 1200,
             'pk': obj.pk
         }
-        return reverse(view_name=view_name, kwargs=url_kwargs, request=request, format=format)
+        return reverse(view_name, kwargs=url_kwargs, request=request, format=format)
 
 
 class UserImageSerializer(serializers.ModelSerializer):
     original_image = serializers.SerializerMethodField()
     thumbnails = serializers.SerializerMethodField()
-    temp_link = UserImageTempLink(format='html')
+    temp_link = UserImageTempLink(view_name='user-image-temp-link', format='html')
 
     class Meta:
         model = UserImage
