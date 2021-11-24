@@ -107,6 +107,7 @@ class UserImageDeleteView(LoginRequiredMixin, UserPassesTestMixin, generics.Dest
 
 
 class UserImageExpiringLinkVew(LoginRequiredMixin, UserPassesTestMixin, generics.GenericAPIView):
+    allowed_methods = ('GET',)
     serializer_class = UserImageExpiringLinkSerializer
 
     def get_queryset(self):
