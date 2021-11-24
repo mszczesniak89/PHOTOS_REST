@@ -6,13 +6,17 @@ from django.utils.translation import gettext_lazy as _
 from photos_rest.photo_host.models import AccountPlan
 
 
+def get_default_account_plan():
+    return AccountPlan.objects.get(name='Basic')
+
+
 class User(AbstractUser):
     """Default user for PHOTOS_REST."""
     #: First and last name do not cover name patterns around the globe
     name = CharField(_("Name of User"), blank=True, max_length=255)
     first_name = None  # type: ignore
     last_name = None  # type: ignore
-    account_plan = ForeignKey(AccountPlan, default=lambda: AccountPlan.objects.get(name='Basic'), blank=False,
+    account_plan = ForeignKey(AccountPlan, default=get_default_account_plan, blank=False,
                               null=True, on_delete=models.SET_NULL)
 
     def get_absolute_url(self):
