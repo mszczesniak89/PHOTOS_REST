@@ -106,13 +106,20 @@ class UserImageDeleteView(LoginRequiredMixin, UserPassesTestMixin, generics.Dest
         return self.request.user == self.get_object().user
 
 
-class UserImageExpiringLinkVew(LoginRequiredMixin, UserPassesTestMixin, generics.GenericAPIView):
-    allowed_methods = ['GET']
-    serializer_class = UserImageExpiringLinkSerializer
+# class UserImageExpiringLinkVew(LoginRequiredMixin, UserPassesTestMixin, generics.GenericAPIView):
+#     allowed_methods = ['GET']
+#     serializer_class = UserImageExpiringLinkSerializer
+#
+#     def get_queryset(self):
+#         return UserImage.objects.filter(user=self.request.user)
+#
+#     def test_func(self):
+#         return self.request.user == self.get_object().user
 
-    def get_queryset(self):
-        return UserImage.objects.filter(user=self.request.user)
 
-    def test_func(self):
-        return self.request.user == self.get_object().user
+class UserImageExpiringLinkVew(APIView):
 
+    def get(self, request, pk):
+        image = UserImage.objects.filter(user=self.request.user, id=pk)
+        serializer = UserImageExpiringLinkSerializer(image)
+        return Response(serializer.data)
