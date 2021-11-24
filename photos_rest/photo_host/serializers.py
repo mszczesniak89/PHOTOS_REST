@@ -65,4 +65,4 @@ class UserImageExpiringLinkSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = UserImage
-        exclude = ['user', 'image', 'image_ppoi']
+        fields = '__all__'
