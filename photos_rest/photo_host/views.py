@@ -111,7 +111,7 @@ class UserImageDeleteView(LoginRequiredMixin, UserPassesTestMixin, generics.Dest
 class UserImageExpiringLinkVew(LoginRequiredMixin, APIView):
 
     def get(self, request, pk, exp_time):
-        if pk not in range(300, 30001):
+        if exp_time not in range(300, 30001):
             raise InvalidExpirationTime()
         else:
             image = UserImage.objects.get(user=self.request.user, id=pk)
