@@ -52,7 +52,7 @@ class UserImageTempLink(serializers.HyperlinkedIdentityField):
             'exp_time': 1200,
             'pk': obj.pk
         }
-        return reverse(view_name, kwargs=url_kwargs, request=request, format=format)
+        return reverse(view_name=view_name, kwargs=url_kwargs, request=request, format=format)
 
 
 class UserImageSerializer(serializers.ModelSerializer):
