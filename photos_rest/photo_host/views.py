@@ -1,9 +1,13 @@
 from django.shortcuts import render
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from rest_framework import generics
+from rest_framework.views import APIView
+from rest_framework.response import Response
+from rest_framework.renderers import JSONRenderer
 from photos_rest.photo_host.models import AccountPlan, ThumbnailType, UserImage
 from photos_rest.photo_host.serializers import AdminAccountPlanSerializer, AdminThumbnailTypeSerializer, \
-    AdminUserImageSerializer, UserImageSerializer, UserImageAddSerializer, UserImageListSerializer
+    AdminUserImageSerializer, UserImageSerializer, UserImageAddSerializer, UserImageListSerializer, \
+    UserImageExpiringLinkSerializer
 
 
 # Create your views here.
@@ -94,6 +98,16 @@ class UserImageUpdateView(LoginRequiredMixin, UserPassesTestMixin, generics.Upda
 
 class UserImageDeleteView(LoginRequiredMixin, UserPassesTestMixin, generics.DestroyAPIView):
     serializer_class = UserImageAddSerializer
+
+    def get_queryset(self):
+        return UserImage.objects.filter(user=self.request.user)
+
+    def test_func(self):
+        return self.request.user == self.get_object().user
+
+
+class UserImageExpiringLinkVew(LoginRequiredMixin, UserPassesTestMixin, generics.GenericAPIView):
+    serializer_class = UserImageExpiringLinkSerializer
 
     def get_queryset(self):
         return UserImage.objects.filter(user=self.request.user)

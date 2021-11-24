@@ -43,6 +43,7 @@ class UserImageListSerializer(serializers.ModelSerializer):
 class UserImageSerializer(serializers.ModelSerializer):
     original_image = serializers.SerializerMethodField()
     thumbnails = serializers.SerializerMethodField()
+    temp_link = serializers.HyperlinkedIdentityField(view_name='user-image-temp-link', format='html')
 
     class Meta:
         model = UserImage
@@ -58,3 +59,10 @@ class UserImageSerializer(serializers.ModelSerializer):
     def get_original_image(self, obj):
         if obj.user.account_plan.original_file_access:
             return self.context['request'].build_absolute_uri(obj.image.url)
+
+
+class UserImageExpiringLinkSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = UserImage
+        exclude = ['user', 'image', 'image_ppoi']

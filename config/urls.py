@@ -9,7 +9,7 @@ from rest_framework.authtoken.views import obtain_auth_token
 from photos_rest.photo_host.views import AdminAccountPlanListView, AdminThumbnailTypeListView, AdminThumbnailTypeView, \
     AdminAccountPlanView, \
     AdminUserImageListView, AdminUserImageView, UserImageListView, UserImageView, UserImageAddView, UserImageUpdateView, \
-    UserImageDeleteView
+    UserImageDeleteView, UserImageExpiringLinkVew
 
 urlpatterns = [
     path("", TemplateView.as_view(template_name="pages/home.html"), name="home"),
@@ -44,6 +44,7 @@ urlpatterns += [
     path('user-image/add/', UserImageAddView.as_view()),
     path('user-image/update/<int:pk>/', UserImageUpdateView.as_view()),
     path('user-image/delete/<int:pk>/', UserImageDeleteView.as_view()),
+    path('user-image/temp-link/<int:pk>/', UserImageExpiringLinkVew.as_view(), name='user-image-temp-link'),
 
 ]
 
