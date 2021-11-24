@@ -1,9 +1,11 @@
 from django.shortcuts import render
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from rest_framework import generics
+from rest_framework.exceptions import NotFound
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.renderers import JSONRenderer
+from photos_rest.photo_host.exceptions import InvalidExpirationTime
 from photos_rest.photo_host.models import AccountPlan, ThumbnailType, UserImage
 from photos_rest.photo_host.serializers import AdminAccountPlanSerializer, AdminThumbnailTypeSerializer, \
     AdminUserImageSerializer, UserImageSerializer, UserImageAddSerializer, UserImageListSerializer, \
@@ -109,6 +111,9 @@ class UserImageDeleteView(LoginRequiredMixin, UserPassesTestMixin, generics.Dest
 class UserImageExpiringLinkVew(LoginRequiredMixin, APIView):
 
     def get(self, request, pk, exp_time):
-        image = UserImage.objects.get(user=self.request.user, id=pk)
-        serializer = UserImageExpiringLinkSerializer(image, context={'exp_time': exp_time})
-        return Response(serializer.data)
+        if pk not in range(300, 30001):
+            raise InvalidExpirationTime()
+        else:
+            image = UserImage.objects.get(user=self.request.user, id=pk)
+            serializer = UserImageExpiringLinkSerializer(image, context={'exp_time': exp_time})
+            return Response(serializer.data)
