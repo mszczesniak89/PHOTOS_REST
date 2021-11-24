@@ -12,7 +12,8 @@ class User(AbstractUser):
     name = CharField(_("Name of User"), blank=True, max_length=255)
     first_name = None  # type: ignore
     last_name = None  # type: ignore
-    account_plan = ForeignKey(AccountPlan, blank=False, null=True, on_delete=models.SET_NULL)
+    account_plan = ForeignKey(AccountPlan, default=lambda: AccountPlan.objects.get(name='Basic'), blank=False,
+                              null=True, on_delete=models.SET_NULL)
 
     def get_absolute_url(self):
         """Get url for user's detail view.

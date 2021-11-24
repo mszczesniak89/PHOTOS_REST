@@ -31,7 +31,6 @@ class ThumbnailType(Model):
 class UserImage(Model):
     name = CharField(_("Name of the user image"), blank=False, max_length=255)
     user = ForeignKey(config.settings.base.AUTH_USER_MODEL, blank=False, null=False, on_delete=CASCADE)
-    # image = ImageField(upload_to="user_images/")
     image = VersatileImageField(
         'Image',
         upload_to='ser_images/',
