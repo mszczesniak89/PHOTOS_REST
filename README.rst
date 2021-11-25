@@ -68,10 +68,18 @@ Moved to `Live reloading and SASS compilation`_.
 Deployment
 ----------
 
-The following details how to deploy this application.
 
-Docker
-^^^^^^
+Prerequisites:
+^^^^^^^^^^^^^
+Docker; if you don’t have it yet, follow the  `installation instructions`_.
+
+.. _`installation instructions`: https://docs.docker.com/install/#supported-platforms
+
+Docker Compose; refer to the official documentation for the  `installation guide`_.
+
+.. _`installation guide`: https://docs.docker.com/compose/install/
+
+
 
 See detailed `cookiecutter-django Docker documentation`_.
 
