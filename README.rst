@@ -81,6 +81,16 @@ Docker Compose; refer to the official documentation for the  `installation guide
 .. _`installation guide`: https://docs.docker.com/compose/install/
 
 
+Build the Stack:
+^^^^^^^^^^^^^^
+This can take a while, especially the first time you run this particular command on your development system:
+
+::
+
+$ docker-compose -f production.yml up --build -d
+
+
+
 
 See detailed `cookiecutter-django Docker documentation`_.
 
