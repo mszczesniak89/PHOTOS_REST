@@ -1,7 +1,7 @@
 PHOTOS_REST
 ===========
 
-Live preview: https://www.mszczesniak-photos-rest.site/
+Live preview: https://www.mszczesniak-photos-rest.site/ [NO LONGER ACTIVE]
 ----------------------------------------------------
 
 .. image:: https://img.shields.io/badge/built%20with-Cookiecutter%20Django-ff69b4.svg?logo=cookiecutter
